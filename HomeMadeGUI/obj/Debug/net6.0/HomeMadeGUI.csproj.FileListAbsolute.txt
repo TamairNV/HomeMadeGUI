@@ -1,0 +1,15 @@
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.csproj.AssemblyReference.cache
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.GeneratedMSBuildEditorConfig.editorconfig
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.AssemblyInfoInputs.cache
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.AssemblyInfo.cs
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.csproj.CoreCompileInputs.cache
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/bin/Debug/net6.0/HomeMadeGUI
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/bin/Debug/net6.0/HomeMadeGUI.deps.json
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/bin/Debug/net6.0/HomeMadeGUI.runtimeconfig.json
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/bin/Debug/net6.0/HomeMadeGUI.dll
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/bin/Debug/net6.0/HomeMadeGUI.pdb
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.dll
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/refint/HomeMadeGUI.dll
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.pdb
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.genruntimeconfig.cache
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/ref/HomeMadeGUI.dll
