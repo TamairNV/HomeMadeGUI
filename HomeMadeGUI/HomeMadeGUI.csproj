@@ -7,4 +7,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Raylib-cs" Version="6.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\Fonts" />
+    </ItemGroup>
+
 </Project>
