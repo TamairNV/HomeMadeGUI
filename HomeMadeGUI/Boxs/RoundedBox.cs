@@ -3,14 +3,12 @@ using Raylib_cs;
 
 namespace HomeMadeGUI;
 
-public class RoundedBox
+public class RoundedBox : Box
 {
-    public Position Position;
-    public Bounds Bounds;
-    public Color Colour;
+
     public int Roundness;
 
-    public RoundedBox(Position position, Bounds size, Color colour,int roundness = 10)
+    public RoundedBox(Position position, Bounds size, Color colour,int roundness = 10) : base() 
     {
         Position = position;
         Bounds = size;
