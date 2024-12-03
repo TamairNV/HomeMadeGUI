@@ -8,7 +8,7 @@ public class RoundedBox : Box
 
     public int Roundness;
 
-    public RoundedBox(Position position, Bounds size, Color colour,int roundness = 10) : base() 
+    public RoundedBox(Position position, Bounds size, Color colour,int roundness = 10)
     {
         Position = position;
         Bounds = size;
@@ -16,7 +16,9 @@ public class RoundedBox : Box
         Roundness = roundness;
     }
 
-    public void Draw()
+
+
+    public override void Draw()
         {
             //Draws three rectangles and 4 circle segments to create a rounded rectangle
             

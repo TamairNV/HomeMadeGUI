@@ -27,13 +27,17 @@ class Program
             new TextButton<int, int>(new Position(0.5f, 0.1f), test, 2, "Hello World",Text.Fonts[3], 30);
 
         Viewport viewport = new Viewport(new Position(0.25f, 0.25f), new Position(0.5f, 0.5f));
-        
+
+        Button<int, int> baseButton = new Button<int, int>(new Position(0.8f, 0.1f), new Bounds(0.05f, 0.05f), test, 2,
+            "print 2", Text.Fonts[3], 10);
+
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.White);
             box.Draw();
             textButton.HandleButton();
+            baseButton.HandleButton();
             //textButton.Draw();
             viewport.HandleViewport();
             Position.CheckWindowChange();

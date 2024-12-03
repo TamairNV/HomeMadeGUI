@@ -3,8 +3,8 @@ using System.Numerics;
 using Raylib_cs;
 public class Box
 {
-    public Position Position;
-    public Bounds Bounds;
+    protected Position Position;
+    protected Bounds Bounds;
     public Color Colour;
 
     public Box()
@@ -18,7 +18,7 @@ public class Box
         Colour = colour;
     }
 
-    public void Draw()
+    public virtual void Draw()
     {
         Raylib.DrawRectangle(Position.X,Position.Y,Bounds.X,Bounds.Y,Colour);
     }

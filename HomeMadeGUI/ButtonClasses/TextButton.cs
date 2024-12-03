@@ -3,13 +3,8 @@ using System.Numerics;
 using Raylib_cs;
 public class TextButton<Tout,Tin> : Button<Tout,Tin>
 {
-    private Color textColor = Pallet.Colour[0];
-    private Color hoverColor = Pallet.Colour[3];
-    private Color pressedColor = Pallet.Colour[6];
-    private Color currentColor;
-    private Text Text;
-    private Font font;
-   
+
+
     
     public TextButton(Position position,Func<Tin,Tout> func,Tin input,string defaultStr,Font font,int size)
     {
@@ -22,6 +17,32 @@ public class TextButton<Tout,Tin> : Button<Tout,Tin>
         this.defaultStr = defaultStr;
     }
 
+    public override void HandleButton()
+    {
+        Draw();
+        Vector2 mousePos = Raylib.GetMousePosition();
+        bool overlapping = CheckTextPointCollision(new Vector2(Position.X,Position.Y),defaultStr,size, mousePos);
+        if (!overlapping)
+        {
+            Idle();
+            return;
+        };
+        bool mouseDown = Raylib.IsMouseButtonDown(MouseButton.Left);
+        bool mouseReleased = Raylib.IsMouseButtonReleased(MouseButton.Left);
+        if (mouseDown)
+        {
+            MousePress();
+            return;
+        }
+        if (mouseReleased)
+        {
+            MouseRelease();
+            return;
+        }
+        MouseHover();
+        
+
+    }
     public override void Draw()
     {
         Text.DrawTextCentered(new Vector2(Position.X, Position.Y), defaultStr, font, currentColor, fontSize:size);
