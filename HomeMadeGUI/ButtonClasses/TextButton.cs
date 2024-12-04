@@ -17,11 +17,11 @@ public class TextButton<Tout,Tin> : Button<Tout,Tin>
         this.defaultStr = defaultStr;
     }
 
-    public override void HandleButton()
+    public override void HandleButton(int xOffset = 0, int yOffset = 0)
     {
         Draw();
         Vector2 mousePos = Raylib.GetMousePosition();
-        bool overlapping = CheckTextPointCollision(new Vector2(Position.X,Position.Y),defaultStr,size, mousePos);
+        bool overlapping = CheckTextPointCollision(new Vector2(Position.X - xOffset,Position.Y- yOffset),defaultStr,size, mousePos);
         if (!overlapping)
         {
             Idle();
@@ -66,6 +66,6 @@ public class TextButton<Tout,Tin> : Button<Tout,Tin>
     public override void MouseRelease()
     {
         Run();
-        currentColor = textColor;
+        currentColor = hoverColor;
     }
 }

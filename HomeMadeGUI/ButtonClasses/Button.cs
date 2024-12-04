@@ -12,12 +12,12 @@ public class Button<Tout,Tin>
     protected int size;
     private Bounds bounds;
     
-    protected Color textColor = Pallet.Colour[6];
-    protected Color hoverColor = Pallet.Colour[3];
-    protected Color pressedColor = Pallet.Colour[0];
+    protected Color textColor = Pallet.PrimaryTextColor;
+    protected Color hoverColor = Pallet.ButtonHoverColor;
+    protected Color pressedColor = Pallet.ButtonActiveColor;
     protected Color currentColor;
 
-    private Color buttonColor = Pallet.Colour[2];
+    private Color buttonColor = Pallet.ButtonPrimaryColor;
     
     private RoundedBox roundedBox = null;
     protected Font font;
@@ -47,12 +47,13 @@ public class Button<Tout,Tin>
         
 
     }
-    public virtual void HandleButton()
+
+    public virtual void HandleButton(int xOffset = 0, int yOffset = 0)
     {
         Draw();
         Vector2 mousePos = Raylib.GetMousePosition();
 
-        bool overlapping = Raylib.CheckCollisionRecs(new Rectangle(mousePos, Vector2.One),new Rectangle(Position.X,Position.Y,bounds.X,bounds.Y));
+        bool overlapping = Raylib.CheckCollisionRecs(new Rectangle(mousePos, Vector2.One),new Rectangle(Position.X - xOffset,Position.Y - yOffset,bounds.X,bounds.Y));
         if (!overlapping)
         {
             Idle();
@@ -81,15 +82,22 @@ public class Button<Tout,Tin>
             roundedBox.Colour = currentColor;
             roundedBox.Draw();
         }
-        else //Ep<People & Ah<Hotel & stay(p h) ^ pool(h)
+        else 
         {
             Raylib.DrawRectangle(Position.X,Position.Y,bounds.X,bounds.Y,currentColor);
         }
         
-        Vector2 pos = new Vector2(Position.X + bounds.X / 2, Position.Y + bounds.Y / 2);
-        int textSize = Raylib.MeasureText(defaultStr, size);
-        
-        Text.DrawTextCentered(pos, defaultStr, font, textColor, fontSize: size * (bounds.X/textSize));
+        int fontSize = 10; // Start with a small font size
+
+        while (Raylib.MeasureText(defaultStr, fontSize) <= bounds.X)
+        {
+            fontSize++;
+        }
+
+        float diff = bounds.X - Raylib.MeasureText(defaultStr, fontSize);
+        Vector2 pos = new Vector2(Position.X - diff/2 , (Position.Y + bounds.Y / 2) - fontSize/2);
+        Raylib.DrawTextEx(font,defaultStr,pos,fontSize,1,textColor);
+  
     }
     public virtual void MouseHover()
     {
@@ -107,7 +115,7 @@ public class Button<Tout,Tin>
 
     public virtual void MouseRelease()
     {
-        currentColor = buttonColor;
+        currentColor = hoverColor;
         Run();
     }
 

@@ -14,12 +14,14 @@ public class Viewport
     private Vector2 texOrigin;
     private Rectangle texSourceRec;
     private RoundedBox outline;
-    public Viewport(Position position,Position size, int cellAmount = 40)
+    private Action<int,int> drawMethod;
+    public Viewport(Position position,Position size, Action<int,int> drawMethod ,int cellAmount = 40)
     {
+        this.drawMethod = drawMethod;
         float thickness = 0.0035f;
         outline = new RoundedBox(new Position(position.RelativePosition.X - thickness, position.RelativePosition.Y - thickness),
             new Bounds(size.RelativePosition.X + thickness*2, size.RelativePosition.Y + thickness*2),
-            Pallet.Colour[4]);
+            Pallet.BorderColor);
         texOrigin = new Vector2(1000, 1000); 
         backgroundTex = Raylib.LoadTexture("Resources/checks.png");
         texSourceRec = new Rectangle( 0.0f, 0.0f, backgroundTex.Width * cellAmount, backgroundTex.Height * cellAmount );
@@ -37,11 +39,7 @@ public class Viewport
         camera.Offset = new Vector2(400, 300);
         camera.Rotation = 0.0f;
         camera.Zoom = 1.0f ;
-        rectangles = new [] {
-            new Rectangle(25, 30, 100, 100),
-            new Rectangle(300, 200, 76, 10),
-            new Rectangle(150, 150, 50, 30)
-        };
+
     }
 
     
@@ -82,10 +80,7 @@ public class Viewport
         // Draw draggable objects
         DrawBackground(25, Color.Black, Color.DarkGray);
 
-        foreach (Rectangle rect in rectangles)
-        {
-            Raylib.DrawRectangleRec(rect, Color.Red);
-        }
+        drawMethod((int)camera.Target.X - Position.X, (int)camera.Target.Y - Position.Y);
 
         Raylib.EndMode2D();
         Raylib.EndScissorMode();
@@ -156,9 +151,5 @@ public class Viewport
         }
     }
 
-
-    private void DrawBoundary(int thickness ,Color Colour, int Roundness = 10 )
-    {
-        
-    }
+    
 }
