@@ -8,6 +8,8 @@ public class Pallet
     public static Color PrimaryColor;
     public static Color SecondaryColor;
     public static Color AccentColor; // For special highlights or callouts
+    public static Color Invisible;
+    public static Color SecondaryBorderColor;
 
     // Text Colors
     public static Color PrimaryTextColor;
@@ -72,29 +74,33 @@ public class Pallet
 
     public static void InitializeColors()
     {
-        PrimaryColor = new Color(54, 69, 79, 255); 
-        SecondaryColor = new (83, 104, 120, 200); 
-        AccentColor = new (255, 255, 193, 7); //work
-    
-        PrimaryTextColor = Color.Black;
+        CodeRep.InitCodeColours();
+        Invisible = new Color(0, 0, 0, 0);
+        
+        PrimaryColor = new Color(47, 45, 45,255);
+        SecondaryColor = new (38, 38, 43,255); 
+        AccentColor = new (255, 72, 0, 7); //work
+
+        PrimaryTextColor = new(255, 210, 255, 255);
         SecondaryTextColor = Color.DarkGray;
         DisabledTextColor = Color.Gray;
         ErrorTextColor = Color.Red;
         SuccessTextColor = Color.Green;
 
-        BackgroundColor = new(112,128,144,255);
+        BackgroundColor = new(29, 29, 30,255);
         CardBackgroundColor = new(255, 248, 249, 250);
         ModalBackgroundColor = new(240, 240, 240,255);
         HighlightBackgroundColor = new(255, 232, 245, 255);
 
-        ButtonPrimaryColor = new Color(77,117,154,255);
+        ButtonPrimaryColor = new Color(80,79,86,255);
         ButtonSecondaryColor = new Color(111, 162, 208, 255);
-        ButtonTextColor = Color.Black;
+        ButtonTextColor = new(238, 238, 239, 255);
         ButtonDisabledColor = Color.LightGray;
-        ButtonHoverColor = new Color(7, 55, 99, 255);
-        ButtonActiveColor = new(5, 44, 79, 200);
+        ButtonHoverColor = new Color(100,99,106,255);
+        ButtonActiveColor = new(214,236,114,255);
 
-        BorderColor = Color.LightGray;
+        BorderColor = Color.Black;
+        SecondaryBorderColor = Color.DarkGray;
         FocusBorderColor = PrimaryColor;
         ErrorBorderColor = ErrorTextColor;
 

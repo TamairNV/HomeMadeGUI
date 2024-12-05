@@ -13,15 +13,13 @@ public class Viewport
     private Texture2D backgroundTex;
     private Vector2 texOrigin;
     private Rectangle texSourceRec;
-    private RoundedBox outline;
+  
     private Action<int,int> drawMethod;
     public Viewport(Position position,Position size, Action<int,int> drawMethod ,int cellAmount = 40)
     {
         this.drawMethod = drawMethod;
         float thickness = 0.0035f;
-        outline = new RoundedBox(new Position(position.RelativePosition.X - thickness, position.RelativePosition.Y - thickness),
-            new Bounds(size.RelativePosition.X + thickness*2, size.RelativePosition.Y + thickness*2),
-            Pallet.BorderColor);
+
         texOrigin = new Vector2(1000, 1000); 
         backgroundTex = Raylib.LoadTexture("Resources/checks.png");
         texSourceRec = new Rectangle( 0.0f, 0.0f, backgroundTex.Width * cellAmount, backgroundTex.Height * cellAmount );
@@ -48,12 +46,12 @@ public class Viewport
         Vector2 mousePos = Raylib.GetMousePosition();
         
         Rectangle mouseRect = new Rectangle(mousePos, 1, 1);
-        if (Raylib.IsMouseButtonPressed(MouseButton.Middle) )
+        if (Raylib.IsMouseButtonPressed(MouseButton.Left) )
         {
             isMouseOverViewport = Raylib.CheckCollisionRecs(mouseRect, viewport);
         }
 
-        if (Raylib.IsMouseButtonReleased(MouseButton.Middle))
+        if (Raylib.IsMouseButtonReleased(MouseButton.Left))
         {
             isMouseOverViewport = Raylib.CheckCollisionRecs(mouseRect, viewport);
         }
@@ -63,27 +61,28 @@ public class Viewport
         if (isMouseOverViewport) HandleMouseDragging();
         
         if(Raylib.CheckCollisionRecs(mouseRect, viewport)) HandleZoom();
-        outline.Draw();
+        
         
 
 
         
-        // Draw the viewport boundary
-        Raylib.DrawRectangleLinesEx(viewport, 2, Color.Black);
 
         // Set clipping area for objects
         Raylib.BeginScissorMode((int)viewport.X, (int)viewport.Y, (int)viewport.Width, (int)viewport.Height);
-
         // Use the camera to handle movement inside the viewport
         Raylib.BeginMode2D(camera);
 
         // Draw draggable objects
-        DrawBackground(25, Color.Black, Color.DarkGray);
+        DrawBackground();
 
         drawMethod((int)camera.Target.X - Position.X, (int)camera.Target.Y - Position.Y);
 
         Raylib.EndMode2D();
         Raylib.EndScissorMode();
+        // Draw the viewport boundap
+        Raylib.DrawRectangleRoundedLines(new Rectangle(viewport.X , viewport.Y , viewport.Width , viewport.Height ),0.05f,10,10,Pallet.PrimaryColor);
+
+
 
     }
 
@@ -95,7 +94,7 @@ public class Viewport
     }
     private void HandleMouseDragging()
     {
-        if (Raylib.IsMouseButtonDown(MouseButton.Middle))
+        if (Raylib.IsMouseButtonDown(MouseButton.Left))
         {
             Vector2 delta = Raylib.GetMouseDelta();
             camera.Target.X -= delta.X / camera.Zoom;
@@ -109,7 +108,7 @@ public class Viewport
      
     }
 
-    private void DrawBackground(int tileSize, Color colour1, Color colour2)
+    private void DrawBackground()
     {
         
         Rectangle destRec = new Rectangle((int)750 ,(int)750, 1000,  1000 ); // Destination rectangle

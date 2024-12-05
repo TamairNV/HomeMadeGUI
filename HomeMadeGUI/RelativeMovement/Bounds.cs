@@ -33,7 +33,11 @@ public class Bounds
 
     public void ReDoBounds()
     {
-        X = Convert.ToInt16(RelativeBounds.X * ScreenSize.X);
-        Y = Convert.ToInt16(RelativeBounds.Y * ScreenSize.Y);
+        if (RelativeBounds.X <= 1 && RelativeBounds.Y <= 1)
+        {
+            X = Convert.ToInt16(RelativeBounds.X * ScreenSize.X);
+            Y = Convert.ToInt16(RelativeBounds.Y * ScreenSize.Y);
+        }
+
     }
 }

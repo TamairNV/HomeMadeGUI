@@ -11,7 +11,7 @@ class Program
     {
      
         Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
-        Raylib.InitWindow(800, 600, "Custom Font Example");
+        Raylib.InitWindow(1600, 800, "Home Made GUI");
         Raylib.SetTargetFPS(60);
         // Load the custom font
         Text.InitFonts();
@@ -26,30 +26,40 @@ class Program
 
         TextButton<int, int> textButton =
             new TextButton<int, int>(new Position(0.3f, 0.1f), test, 2, "Hello World",Text.Fonts[3], 30);
-        Button<int, int> baseButton = new Button<int, int>(new Position(0.3f, 0.1f), new Bounds(0.05f, 0.05f), test, 2,
+        Button<int, int> baseButton = new Button<int, int>(new Position(0.3f, 0.1f), new Bounds(0.08f, 0.05f), test, 2,
             "print 2", Text.Fonts[3], 10);
         void HandleButtons(int xOffset = 0, int yOffset = 0)
         {
-            textButton.HandleButton(xOffset,yOffset);
-            baseButton.HandleButton(xOffset,yOffset);
+            hello.DrawText();
         }
         Viewport viewport = new Viewport(new Position(0.25f, 0.25f), new Position(0.5f, 0.5f),HandleButtons);
 
 
-        TextInput testInput = new TextInput();
+        TextInput testInput = new TextInput(new Position(0.5f,0.1f),150,20,"username", verticalPadding:15,rounded:true);
+        TextInput testInput2 = new TextInput(new Position(0.5f,0.2f),150,20,"password", verticalPadding:15,rounded:true);
+        TextInputGroup testGroup = new TextInputGroup();
+        testGroup.AddInput(testInput);
+        testGroup.AddInput(testInput2);
+
+
+
+        Window1 window1 = new Window1();
 
         while (!Raylib.WindowShouldClose())
         {
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Pallet.PrimaryColor);
-            box.Draw();
-            
-            testInput.HandleTextInputs();
+            //box.Draw();
+            window1.Draw();
+
+            //testGroup.HandleInputs();
             //textButton.Draw();
-            viewport.HandleViewport();
+            //viewport.HandleViewport();
+            //textButton.HandleButton();
+            //baseButton.HandleButton();
             Position.CheckWindowChange();
             Bounds.CheckWindowChange();
-            hello.DrawText();
+            
 
             Raylib.EndDrawing();
         }
@@ -65,6 +75,11 @@ class Program
         Console.WriteLine(num);
         return 0;
     }
+
+
+
+
+
 
 
 

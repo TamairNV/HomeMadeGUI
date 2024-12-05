@@ -22,13 +22,16 @@ public class Button<Tout,Tin>
     private RoundedBox roundedBox = null;
     protected Font font;
 
+    private bool square;
+
     public Button()
     {
         
     }
 
-    public Button(Position position,Bounds bounds, Func<Tin,Tout> func,Tin input,string defaultStr,Font font,int size,bool isRounded = true)
+    public Button(Position position,Bounds bounds, Func<Tin,Tout> func,Tin input,string defaultStr,Font font,int size,bool isRounded = true,bool square = false)
     {
+        this.square = square;
         this.bounds = bounds;
       
         if (isRounded)
@@ -81,22 +84,37 @@ public class Button<Tout,Tin>
             
             roundedBox.Colour = currentColor;
             roundedBox.Draw();
+            if (square)
+            {
+                roundedBox.Draw(square:true);
+            }
+            else
+            {
+                roundedBox.Draw();
+            }
         }
         else 
         {
-            Raylib.DrawRectangle(Position.X,Position.Y,bounds.X,bounds.Y,currentColor);
+            if (square)
+            {
+                Raylib.DrawRectangle(Position.X,Position.Y,bounds.X,bounds.X,currentColor);
+            }
+            else
+            {
+                Raylib.DrawRectangle(Position.X,Position.Y,bounds.X,bounds.Y,currentColor);
+            }
         }
         
         int fontSize = 10; // Start with a small font size
 
-        while (Raylib.MeasureText(defaultStr, fontSize) <= bounds.X)
+        while (Raylib.MeasureText(defaultStr, fontSize) <= bounds.X )
         {
             fontSize++;
         }
 
         float diff = bounds.X - Raylib.MeasureText(defaultStr, fontSize);
-        Vector2 pos = new Vector2(Position.X - diff/2 , (Position.Y + bounds.Y / 2) - fontSize/2);
-        Raylib.DrawTextEx(font,defaultStr,pos,fontSize,1,textColor);
+        Vector2 pos = new Vector2(Position.X - diff/2  , (Position.Y + bounds.Y / 2) - fontSize/2);
+        Raylib.DrawTextEx(font,defaultStr,pos,fontSize * 0.9f,1,textColor);
   
     }
     public virtual void MouseHover()
