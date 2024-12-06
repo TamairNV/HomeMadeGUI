@@ -13,6 +13,7 @@ public class Text
     public int FontSize;
     private Font font;
     private bool addLine;
+    public Color Color;
 
 
     public Text(string text, Position pos, int fontSize = 20, bool centered = false, int fontIndex = 3, bool addLine = false)
@@ -23,6 +24,7 @@ public class Text
         Position = pos;
         FontSize = fontSize;
         font = Fonts[fontIndex];
+        Color = Pallet.PrimaryTextColor;
     }
 
     public void DrawText()
@@ -31,7 +33,7 @@ public class Text
         if (centered)
         {
             //Draws texted centered at the position
-            DrawTextCentered(new Vector2(Position.X, Position.Y), DisplayText, font, Pallet.PrimaryTextColor,fontSize:FontSize);
+            DrawTextCentered(new Vector2(Position.X, Position.Y), DisplayText, font, Color,fontSize:FontSize);
             if (addLine)
             {
                 Raylib.DrawRectangle(Position.X,(int)(Position.Y + textMeasure.Y/2 ),(int)textMeasure.X,1,Pallet.SecondaryBorderColor);
@@ -40,7 +42,7 @@ public class Text
         else
         {
             //Draws texted starting at the position
-            Raylib.DrawTextEx(font,DisplayText, new Vector2(Position.X,Position.Y), FontSize,2, Pallet.PrimaryTextColor);
+            Raylib.DrawTextEx(font,DisplayText, new Vector2(Position.X,Position.Y), FontSize,2, Color);
             if (addLine)
             {
                 Raylib.DrawRectangle(Position.X,(int)(Position.Y + textMeasure.Y /2),(int)textMeasure.X,1,Pallet.SecondaryBorderColor);

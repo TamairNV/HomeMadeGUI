@@ -15,12 +15,16 @@ public class CodeRep
     public static Color Operators;
     public static Color Classes;
     public static Color MagicMethods;
+    public int xMoveOffset = 0;
+
+    public Position Position;
 
     private List<Word> Words = new List<Word>();
+    private int lineNumbers = 0;
 
-    public CodeRep(string filePath)
+    public CodeRep(string filePath,Position position)
     {
-
+        Position = position;
         Word lastWord = null;
         char[] wordSplitters = {' ', ']' , '[' , '{' , '}' , ':' , '(' , ')', ':','.',','};
         // Check if the file exists
@@ -29,7 +33,7 @@ public class CodeRep
                 // Read all lines from the file
                 string[] lines = File.ReadAllLines(filePath);
                 string currentWord = "";
-                int i = 1;
+             
                 void addWord()
                 {
                     Words.Add(new Word(currentWord,lastWord));
@@ -38,14 +42,10 @@ public class CodeRep
                 }
                 foreach (string line in lines)
                 {
+                    lineNumbers += 1;
                     bool isComment = false;
-                    currentWord = Convert.ToString(i) + "  ";
-                    if (currentWord.Length == 3)
-                    {
-                        currentWord += " ";
-                    }
-                    i++;
-                    addWord();
+                    
+                    
                     currentWord = "";
                     foreach (char letter in line)
                     {
@@ -77,7 +77,7 @@ public class CodeRep
                     {
                         addWord();
                     }
-                    Words.Add(new Word("tab",lastWord));
+                    Words.Add(new Word("   ",lastWord));
                     lastWord = Words[Words.Count-1];
                 }
             }
@@ -99,30 +99,55 @@ public class CodeRep
         MagicMethods = new Color(159,20,161,255);
     }
 
-    
-
-    public void Render(int startX, int startY, int fontSize = 15)
+    public void DrawLineNums(Viewport viewport,int fontSize = 15)
     {
-        int lineHeight = (int)Raylib.MeasureTextEx(Text.Fonts[3], "Y", 20, 2).Y;
+        Vector2 textSize = Raylib.MeasureTextEx(Text.Fonts[3], "n", fontSize, 2);
+        int lineHeight = (int)textSize.Y;
         int yOffset = 0;
-
-        int xOffset = startX;
+        for (int i = 1; i < lineNumbers; i++)
+        {
+            Raylib.DrawTextEx(Text.Fonts[3], Convert.ToString(i), new Vector2(Position.X+viewport.Position.X-textSize.X*2.5f,  Position.Y + yOffset+viewport.Position.Y), fontSize, 0,
+                Numbers);
+            yOffset += lineHeight;
+        }
+    }
+    public void Render(int fontSize = 15, int highlightLine = 0)
+    {
+        int lineHeight = (int)Raylib.MeasureTextEx(Text.Fonts[3], "n", fontSize, 2).Y;
+        int yOffset = 0;
+        int lineNum =1;
+        int xOffset = Position.X;
         foreach (var word in Words)
         {
-            if (word.ColouredWord == "tab")
+            int moveOffset = xMoveOffset;
+            if (word.ColouredWord == "   ")
             {
                 yOffset += lineHeight; // Move the Y offset for the next line
-                xOffset = startX;
+                xOffset = Position.X;
+                lineNum += 1;
             }
             else
             {
+                if (lineNum == highlightLine && word.Parent != null && word.Parent.ColouredWord != "   ")
+                {
+                    Raylib.DrawRectangleRounded(new Rectangle(Position.X,yOffset + Position.Y,5000,lineHeight),0.5f,15,new Color(20,20,80,10));
+                    
+                }
+                if(word.Color.Equals(Numbers))
+                {
+                    moveOffset = 0;
+                }
                 if (word.ColouredWord.Length == 1)
                 {
                     xOffset += 2;
                 }
-                Raylib.DrawTextEx(Text.Fonts[3], word.ColouredWord, new Vector2(xOffset, startY + yOffset), fontSize, 2, word.Color);
-                xOffset += (int)Raylib.MeasureTextEx(Text.Fonts[3], word.ColouredWord, fontSize, 2).X;
+                
+
+                Raylib.DrawTextEx(Text.Fonts[3], word.ColouredWord, new Vector2(xOffset + moveOffset,  Position.Y + yOffset), fontSize, 0,
+                    word.Color);
+                xOffset += (int)Raylib.MeasureTextEx(Text.Fonts[3], word.ColouredWord, fontSize, 0).X;
             }
+
         }
     }
 }
@@ -150,9 +175,9 @@ class Word
             Color = CodeRep.Numbers;
         }
         
-        else if (ColouredWord == "tab")
+        else if (ColouredWord == "   ")
         {
-            Color = new Color(0, 0, 0, 0);
+            Color = new Color(0, 0, 0, 255);
         }
         else if (ColouredWord[0] == '_' && ColouredWord[1] == '_')
         {

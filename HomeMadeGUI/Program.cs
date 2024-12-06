@@ -9,7 +9,7 @@ class Program
 {
     static void Main()
     {
-     
+
         Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
         Raylib.InitWindow(1600, 800, "Home Made GUI");
         Raylib.SetTargetFPS(60);
@@ -51,7 +51,6 @@ class Program
             Raylib.ClearBackground(Pallet.PrimaryColor);
             //box.Draw();
             window1.Draw();
-
             //testGroup.HandleInputs();
             //textButton.Draw();
             //viewport.HandleViewport();

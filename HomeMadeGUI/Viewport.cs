@@ -15,8 +15,18 @@ public class Viewport
     private Rectangle texSourceRec;
   
     private Action<int,int> drawMethod;
-    public Viewport(Position position,Position size, Action<int,int> drawMethod ,int cellAmount = 40)
+    private bool noBackground;
+    private bool noZoom;
+    private bool noMoveBack;
+    private bool noMoveForward;
+
+    public Viewport(Position position, Position size, Action<int, int> drawMethod, int cellAmount = 40,
+        bool noBackground = false,bool noZoom = false, bool noMoveBack = false,bool noMoveForward = false)
     {
+        this.noMoveForward = noMoveForward;
+        this.noBackground = noBackground;
+        this.noMoveBack = noMoveBack;
+        this.noZoom = noZoom;
         this.drawMethod = drawMethod;
         float thickness = 0.0035f;
 
@@ -57,10 +67,14 @@ public class Viewport
         }
         viewport = new Rectangle(Position.X, Position.Y, Size.X, Size.Y);
         camera.Offset = new Vector2(Position.X, Position.Y);
-        ResetZoom();
-        if (isMouseOverViewport) HandleMouseDragging();
         
-        if(Raylib.CheckCollisionRecs(mouseRect, viewport)) HandleZoom();
+        if (isMouseOverViewport) HandleMouseDragging();
+
+        if (Raylib.CheckCollisionRecs(mouseRect, viewport) && !noZoom)
+        {
+            HandleZoom();
+            ResetZoom();
+        }
         
         
 
@@ -73,14 +87,18 @@ public class Viewport
         Raylib.BeginMode2D(camera);
 
         // Draw draggable objects
-        DrawBackground();
+        if (!noBackground)
+        {
+            DrawBackground();
+        }
+        
 
         drawMethod((int)camera.Target.X - Position.X, (int)camera.Target.Y - Position.Y);
 
         Raylib.EndMode2D();
         Raylib.EndScissorMode();
         // Draw the viewport boundap
-        Raylib.DrawRectangleRoundedLines(new Rectangle(viewport.X , viewport.Y , viewport.Width , viewport.Height ),0.05f,10,10,Pallet.PrimaryColor);
+        Raylib.DrawRectangleRoundedLines(new Rectangle(viewport.X , viewport.Y , viewport.Width , viewport.Height ),0.05f,20,10,Pallet.SecondaryColor);
 
 
 
@@ -91,20 +109,35 @@ public class Viewport
         float maxZoom = viewport.Width/500;
         if (camera.Zoom < maxZoom) camera.Zoom = maxZoom;
         if (camera.Zoom > 3.0f) camera.Zoom = 3.0f;
+        
     }
     private void HandleMouseDragging()
     {
         if (Raylib.IsMouseButtonDown(MouseButton.Left))
         {
             Vector2 delta = Raylib.GetMouseDelta();
+
             camera.Target.X -= delta.X / camera.Zoom;
             camera.Target.Y -= delta.Y / camera.Zoom;
         }
-        
-        if (camera.Target.X < -250) camera.Target.X = -250;
-        if (camera.Target.X > 250) camera.Target.X = 250;
-        if (camera.Target.Y < -250) camera.Target.Y = -250;
-        if (camera.Target.Y > 250) camera.Target.Y = 250;
+
+        Vector2 xBounds = new Vector2(-250, 250);
+        Vector2 yBounds = new Vector2(-250, 250);
+        if (noMoveBack)
+        {
+            xBounds.X = 0;
+            yBounds.X = 0;
+        }
+
+        if (noMoveForward)
+        {
+            xBounds.Y = 0;
+            yBounds.Y = 0;
+        }
+        if (camera.Target.X < xBounds.X) camera.Target.X = xBounds.X;
+        if (camera.Target.X > xBounds.Y) camera.Target.X = xBounds.Y;
+        if (camera.Target.Y < yBounds.X) camera.Target.Y = yBounds.X;
+        if (camera.Target.Y > yBounds.Y) camera.Target.Y = yBounds.Y;
      
     }
 
@@ -148,6 +181,11 @@ public class Viewport
             camera.Target.X += mouseWorldPosBeforeZoom.X - mouseWorldPosAfterZoom.X;
             camera.Target.Y += mouseWorldPosBeforeZoom.Y - mouseWorldPosAfterZoom.Y;
         }
+    }
+
+    private void HandelHorizontal()
+    {
+        
     }
 
     

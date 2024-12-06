@@ -17,7 +17,7 @@ public class Button<Tout,Tin>
     protected Color pressedColor = Pallet.ButtonActiveColor;
     protected Color currentColor;
 
-    private Color buttonColor = Pallet.ButtonPrimaryColor;
+    protected Color buttonColor = Pallet.ButtonPrimaryColor;
     
     private RoundedBox roundedBox = null;
     protected Font font;

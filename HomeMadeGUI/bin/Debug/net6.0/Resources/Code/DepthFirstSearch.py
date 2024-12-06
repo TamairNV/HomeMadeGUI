@@ -9,6 +9,7 @@ class Node:
 
 def depth_first_search(start):
     # Basic Depth First Search (DFS) Algorithm using Node objects.
+    
     visited = [] # List to keep track of visited nodes.
     stack = [start] # Stack to manage the nodes to visit.
 
@@ -23,6 +24,7 @@ def depth_first_search(start):
                 if neighbor not in visited:
                     stack.append(neighbor)
 
-    return [node.name for node in visited]  # Return the names of visited nodes.
+    # Return the names of visited nodes.
+    return [node.name for node in visited]
 
 

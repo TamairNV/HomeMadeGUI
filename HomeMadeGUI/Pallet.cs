@@ -79,7 +79,7 @@ public class Pallet
         
         PrimaryColor = new Color(47, 45, 45,255);
         SecondaryColor = new (38, 38, 43,255); 
-        AccentColor = new (255, 72, 0, 7); //work
+        AccentColor = new (255, 72, 0, 255); //work
 
         PrimaryTextColor = new(255, 210, 255, 255);
         SecondaryTextColor = Color.DarkGray;
@@ -92,12 +92,12 @@ public class Pallet
         ModalBackgroundColor = new(240, 240, 240,255);
         HighlightBackgroundColor = new(255, 232, 245, 255);
 
-        ButtonPrimaryColor = new Color(80,79,86,255);
+        ButtonPrimaryColor = new Color(130,129,136,255);
         ButtonSecondaryColor = new Color(111, 162, 208, 255);
         ButtonTextColor = new(238, 238, 239, 255);
         ButtonDisabledColor = Color.LightGray;
         ButtonHoverColor = new Color(100,99,106,255);
-        ButtonActiveColor = new(214,236,114,255);
+        ButtonActiveColor = AccentColor;
 
         BorderColor = Color.Black;
         SecondaryBorderColor = Color.DarkGray;
