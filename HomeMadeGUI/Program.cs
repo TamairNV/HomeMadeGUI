@@ -9,7 +9,7 @@ class Program
 {
     static void Main()
     {
-
+        Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint);
         Raylib.SetConfigFlags(ConfigFlags.ResizableWindow);
         Raylib.InitWindow(1600, 800, "Home Made GUI");
         Raylib.SetTargetFPS(60);

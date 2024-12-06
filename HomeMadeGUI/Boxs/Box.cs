@@ -3,8 +3,8 @@ using System.Numerics;
 using Raylib_cs;
 public class Box
 {
-    protected Position Position;
-    protected Bounds Bounds;
+    public Position Position;
+    public Bounds Bounds;
     public Color Colour;
     private bool fixedSize;
     private int outlineThickness;

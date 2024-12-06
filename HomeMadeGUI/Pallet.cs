@@ -17,6 +17,7 @@ public class Pallet
     public static Color DisabledTextColor;
     public static Color ErrorTextColor;
     public static Color SuccessTextColor;
+    public static Color SecondaryAccentColor;
 
     // Background Colors
     public static Color BackgroundColor; // Main app background
@@ -79,7 +80,8 @@ public class Pallet
         
         PrimaryColor = new Color(47, 45, 45,255);
         SecondaryColor = new (38, 38, 43,255); 
-        AccentColor = new (255, 72, 0, 255); //work
+        AccentColor = new (255, 72, 0, 255);
+        SecondaryAccentColor = new (255, 140, 50, 255);
 
         PrimaryTextColor = new(255, 210, 255, 255);
         SecondaryTextColor = Color.DarkGray;

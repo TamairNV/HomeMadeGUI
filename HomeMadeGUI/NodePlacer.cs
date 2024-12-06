@@ -76,7 +76,7 @@ public class GraphNode
     private Color defaultColour;
     private Color startColour;
     public bool Searched;
-    private DepthFirstSearchStepper DFSsearcher = new DepthFirstSearchStepper();
+    private GraphSearchStepper searcher = new GraphSearchStepper();
 
     public GraphNode(Vector2 position,string name,NodePlacer nodePlacer, float radius = 20, bool isStartNode = false)
     {
@@ -91,14 +91,14 @@ public class GraphNode
         if (NodePlacer.GraphNodes.Count == 0)
         {
             IsStartNode = true;
-            DFSsearcher.Initialize(this,NodePlacer);
+            searcher.Initialize(this,NodePlacer);
             
             
         }
-        activeColour = Color.Blue;
-        searchedColour = Color.Gold;
+        activeColour = Pallet.SecondaryAccentColor;
+        searchedColour = CodeRep.Comments;
         defaultColour = Pallet.AccentColor;
-        startColour = Color.Pink;
+        startColour = CodeRep.MagicMethods;
 
         CurrentColour = defaultColour;
         
@@ -107,7 +107,7 @@ public class GraphNode
 
     private void Draw(int fontSize = 14)
     {
-
+        Raylib.DrawCircle((int)Position.X,(int)Position.Y,Radius+1,Color.Black);
         Raylib.DrawCircle((int)Position.X,(int)Position.Y,Radius,CurrentColour);
         
         
@@ -149,7 +149,7 @@ public class GraphNode
         timer += Raylib.GetFrameTime();
         if (startAlgor && timer > 0.5f)
         {
-            DFSsearcher.Step();
+            searcher.Step();
             timer = 0;
         }
         if (Searched)
@@ -170,11 +170,11 @@ public class GraphNode
         }
         
         Draw();
-        if (placementCooldownTimer < 0.5f)
+        if (placementCooldownTimer < 0.15f)
         {
             placementCooldownTimer += Raylib.GetFrameTime();
         }
-        if (Raylib.IsMouseButtonPressed(MouseButton.Left) && placementCooldownTimer > 0.5f)
+        if (Raylib.IsMouseButtonPressed(MouseButton.Left) && placementCooldownTimer > 0.15f)
         {
             if (!MouseOverNode())
             {
@@ -182,18 +182,22 @@ public class GraphNode
             }
             bool isAnotherNodeActive = false;
             GraphNode activeNode = null;
+            bool nodeDeactivated = false;
             foreach (GraphNode node in NodePlacer.GraphNodes)
             {
-                if (node.Active && node != this)
+                if (node.Active)
                 {
-                    isAnotherNodeActive = true;
-                    activeNode = node;
-                    
-                    
-                }
-                else
-                {
-           
+                    if (node != this)
+                    {
+                        isAnotherNodeActive = true;
+                        activeNode = node;
+                    }
+                    else
+                    {
+                        Active = false;
+                        nodeDeactivated = true;
+                    }
+
                 }
             }
 
@@ -204,7 +208,7 @@ public class GraphNode
                 Parent = activeNode;
                 activeNode.Active = false;
             }
-            else
+            else if(!nodeDeactivated)
             {
                 Active = true;
             }
@@ -244,24 +248,36 @@ public class GraphNode
 
 
 
-public class DepthFirstSearchStepper
+public class GraphSearchStepper
 {
-    private Stack<GraphNode> _stack = new Stack<GraphNode>();
+    private Stack<GraphNode> stack = new Stack<GraphNode>();
+    private Queue<GraphNode> queue = new Queue<GraphNode>();
     private NodePlacer nodePlacer;
+    private bool isDepth;
 
-    public void Initialize(GraphNode start,NodePlacer nodePlacer)
+    public void Initialize(GraphNode start,NodePlacer nodePlacer,bool isDepth = true)
     {
-        _stack.Clear();
-        _stack.Push(start);
+        this.isDepth = isDepth;
+        if (isDepth)
+        {
+            stack.Clear();
+            stack.Push(start);
+        }
+        else
+        {
+            queue.Clear();
+            queue.Enqueue(start);
+        }
         this.nodePlacer = nodePlacer;
+        nodePlacer.Visited = new HashSet<GraphNode>();
     }
 
-    public bool Step()
+    public bool BreadthFirstSearchStep()
     {
-        if (_stack.Count > 0)
+        if (queue.Count > 0)
         {
             // Pop the next node to process
-            var current = _stack.Pop();
+            var current = queue.Dequeue();
 
             // If it hasn't been visited, mark it and push its neighbors
             if (!nodePlacer.Visited.Contains(current))
@@ -273,7 +289,46 @@ public class DepthFirstSearchStepper
                 // to ensure they are processed in the correct order
                 for (int i = current.Children.Count - 1; i >= 0; i--)
                 {
-                    _stack.Push(current.Children[i]);
+                    queue.Enqueue(current.Children[i]);
+                }
+            }
+
+            return true; // Indicates there are more steps to process
+        }
+
+        return false; // All nodes have been processed
+    }
+
+    public bool Step()
+    {
+        if (isDepth)
+        {
+            return DepthFirstSearchStep();
+            
+        }
+
+        return BreadthFirstSearchStep();
+
+    }
+
+    public bool DepthFirstSearchStep()
+    {
+        if (stack.Count > 0)
+        {
+            // Pop the next node to process
+            var current = stack.Pop();
+
+            // If it hasn't been visited, mark it and push its neighbors
+            if (!nodePlacer.Visited.Contains(current))
+            {
+                nodePlacer.Visited.Add(current);
+                current.Searched = true;
+
+                // Push neighbors to the stack in reverse order
+                // to ensure they are processed in the correct order
+                for (int i = current.Children.Count - 1; i >= 0; i--)
+                {
+                    stack.Push(current.Children[i]);
                 }
             }
 

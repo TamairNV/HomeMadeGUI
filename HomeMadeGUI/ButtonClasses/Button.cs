@@ -5,7 +5,7 @@ namespace HomeMadeGUI;
 
 public class Button<Tout,Tin>
 {
-    protected Position Position;
+    public Position Position;
     protected Func<Tin,Tout> Func;
     protected Tin input;
     protected string defaultStr = "";

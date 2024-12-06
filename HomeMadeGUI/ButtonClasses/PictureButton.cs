@@ -3,15 +3,18 @@ using System.Numerics;
 using Raylib_cs;
 public class PictureButton<Tout,Tin> : Button<Tout,Tin>
 {
-    private Texture2D buttonTexture;
+    public Texture2D ButtonTexture;
     private float scale;
-    
-    public PictureButton(Position position, Func<Tin, Tout> func, Tin input, string texturePath, float scale = 1)
+    private bool flip;
+
+    public PictureButton(Position position, Func<Tin, Tout> func, Tin input, string texturePath, float scale = 1,
+        bool flip = false)
     {
+        this.flip = flip;
         Position = position;
         Func = func;
         this.input = input;
-        buttonTexture = Raylib.LoadTexture(texturePath);
+        ButtonTexture = Raylib.LoadTexture(texturePath);
         this.scale = scale;
     }
     
@@ -22,7 +25,7 @@ public class PictureButton<Tout,Tin> : Button<Tout,Tin>
         Vector2 mousePos = Raylib.GetMousePosition();
 
         bool overlapping = Raylib.CheckCollisionRecs(new Rectangle(mousePos, Vector2.One),
-            new Rectangle(Position.X, Position.Y, buttonTexture.Width*scale, buttonTexture.Height*scale));
+            new Rectangle(Position.X, Position.Y, ButtonTexture.Width*scale, ButtonTexture.Height*scale));
         
         
         if (!overlapping)
@@ -48,7 +51,23 @@ public class PictureButton<Tout,Tin> : Button<Tout,Tin>
     }
     public override void Draw()
     {
-        Raylib.DrawTextureEx(buttonTexture, new Vector2(Position.X, Position.Y), 0.0f, scale, currentColor);
+        if (flip)
+        {
+            Rectangle sourceRec = new Rectangle(0, 0, ButtonTexture.Width, ButtonTexture.Height); // Full texture
+            Rectangle destRec = new Rectangle(Position.X, Position.Y, ButtonTexture.Width * scale, ButtonTexture.Height * scale); // Scaled destination
+            Vector2 origin = new Vector2(0, 0); // Top-left corner as the origin
+
+            // Flip the texture horizontally by negating the source width
+            sourceRec.Width = -sourceRec.Width;
+
+            // Draw the flipped texture
+            Raylib.DrawTexturePro(ButtonTexture, sourceRec, destRec, origin, 0.0f, currentColor);
+        }
+        else
+        {
+            Raylib.DrawTextureEx(ButtonTexture, new Vector2(Position.X, Position.Y), 0.0f, scale, currentColor);
+        }
+
 
       
     }

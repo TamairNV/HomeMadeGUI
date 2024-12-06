@@ -25,20 +25,33 @@ public class Window1
     private ScrollBar bar;
     private RoundedBox codeLineNums;
     private NodePlacer NodePlacer;
+    private RoundedBox graphControlsBox;
+
+    private PictureButton<int, int> pauseButton;
+    private PictureButton<int, int> stepBackButton;
+    private PictureButton<int, int> stepForwardButton;
     public Window1()
     {
          //topBox = new Box(new Position(0, 0), new Bounds(1f, 0.12f), Pallet.SecondaryColor);
 
          
-         sideBox = new RoundedBox(new Position(0.03f, 0.11f), new Bounds(0.18f, 0.85f), Pallet.SecondaryColor,roundness:15);
+         sideBox = new RoundedBox(new Position(0.01f, 0.1f), new Bounds(0.10f, 0.85f), Pallet.SecondaryColor,roundness:15);
          //mainBox = new RoundedBox(new Position(0.24f, 0.1f), new Bounds(0.5f, 0.87f), Pallet.SecondaryColor,
              //roundness: 15);
-             titleBox = new RoundedBox(new Position(0.23f, 0.03f), new Bounds(0.2f, 0.06f), Pallet.SecondaryColor);
-             title = new Text("Depth First Search", new Position(0.33f, 0.06f), fontSize: 35,centered:true);
-             title.Color = Pallet.AccentColor;
-        NodePlacer = new NodePlacer();
-          Viewport = new Viewport(new Position(0.23f, 0.11f), new Position(0.40f, 0.85f),NodePlacer.HandlePlacer);
+          
+          titleBox = new RoundedBox(new Position(0.23f, 0.01f), new Bounds(0.2f, 0.06f), Pallet.SecondaryColor);
+          title = new Text("Depth First Search", new Position(0.33f, 0.02f), fontSize: 35,centered:true);
+          title.Color = Pallet.AccentColor;
+          NodePlacer = new NodePlacer();
+          Viewport = new Viewport(new Position(0.12f, 0.1f), new Position(0.47f, 0.5f),NodePlacer.HandlePlacer);
           NodePlacer.viewport = Viewport;
+          graphControlsBox  = new RoundedBox(new Position(0.6f, 0.1f), new Bounds(0.045f, 0.5f), Pallet.SecondaryColor,roundness:15);
+          pauseButton = new PictureButton<int, int>(new Position(0.613f, 0.12f), OpenHomeWindow, 1,
+              "Resources/Icons/pause.png",scale:0.5f);
+          stepBackButton = new PictureButton<int, int>(new Position(0.6f, 0.175f), OpenHomeWindow, 1,
+              "Resources/Icons/leftArrow.png",scale:0.5f);
+          stepForwardButton = new PictureButton<int, int>(new Position(0.63f, 0.175f), OpenHomeWindow, 1,
+              "Resources/Icons/rightArrow.png",scale:0.5f);
           codeViewPort = new Viewport(new Position(0.67f, 0.0f), new Position(0.6f, 1f), drawCode,noBackground:true,noZoom:true,noMoveBack:true,noMoveForward:true);
           
           //cornerOutline = new Box(new Position(0, 0), new Bounds(0.12f, 0.12f), Pallet.Invisible,outline:true);
@@ -79,12 +92,16 @@ public class Window1
         title.DrawText();
         codeLineNums.Draw();
         codeBox.Draw();
+        graphControlsBox.Draw();
         
         codeViewPort.HandleViewport();
         //float offset = Math.Clamp((Raylib.GetMousePosition().X - code.Position.X)*0.5f,0,200);
         //Console.WriteLine(offset);
         bar.HandelScrollBar();
-        
+        pauseButton.HandleButton();
+        stepBackButton.HandleButton();
+        stepForwardButton.HandleButton();
+
         
         code.xMoveOffset = (int)((bar.Value) * -200);
         code.DrawLineNums(codeViewPort, fontSize:21);
