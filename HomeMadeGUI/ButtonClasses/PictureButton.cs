@@ -4,7 +4,6 @@ using Raylib_cs;
 public class PictureButton<Tout,Tin> : Button<Tout,Tin>
 {
     private Texture2D buttonTexture;
-
     private float scale;
     
     public PictureButton(Position position, Func<Tin, Tout> func, Tin input, string texturePath, float scale = 1)

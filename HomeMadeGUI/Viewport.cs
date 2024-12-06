@@ -6,8 +6,8 @@ public class Viewport
 {
     public Position Position;
     public Position Size;
-    private Camera2D camera = new Camera2D();
-    private Rectangle viewport;
+    public Camera2D camera = new Camera2D();
+    public Rectangle viewport;
     private Rectangle[] rectangles;
     private bool isMouseOverViewport = false;
     private Texture2D backgroundTex;
