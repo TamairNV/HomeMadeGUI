@@ -40,7 +40,7 @@ public class Window1
           titleBox = new RoundedBox(new Position(0.23f, 0.01f), new Bounds(0.2f, 0.06f), Pallet.SecondaryColor);
           title = new Text("Depth First Search", new Position(0.33f, 0.02f), fontSize: 35,centered:true);
           title.Color = Pallet.AccentColor;
-          NodePlacer = new NodePlacer();
+          NodePlacer = new NodePlacer("A*");
           Viewport = new Viewport(new Position(0.12f, 0.1f), new Position(0.47f, 0.5f),NodePlacer.HandlePlacer);
           NodePlacer.viewport = Viewport;
           graphControlsBox  = new RoundedBox(new Position(0.6f, 0.1f), new Bounds(0.045f, 0.5f), Pallet.SecondaryColor,roundness:15);
@@ -93,7 +93,6 @@ public class Window1
         //Console.WriteLine(offset);
         bar.HandelScrollBar();
         speedBar.HandelScrollBar();
-        Console.WriteLine(speedBar.Value);
         NodePlacer.value = speedBar.Value;
 
         
