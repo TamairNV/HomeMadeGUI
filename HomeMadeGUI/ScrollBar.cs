@@ -11,8 +11,10 @@ public class ScrollBar
     private bool selected = false;
     private Vector2 HandlePosition;
     public float Value;
-    public ScrollBar(Position position,Bounds bounds,float defaultValue = 0)
+    private float step;
+    public ScrollBar(Position position, Bounds bounds, float defaultValue = 0, float step = 0)
     {
+        this.step = step;
         Position = position;
         Bounds = bounds;
         Value = defaultValue;
@@ -52,9 +54,22 @@ public class ScrollBar
 
         if (selected)
         {
-            float diff = (Bounds.X + Position.X - mousePos.X)/Bounds.X;
-            Value = Math.Clamp(1-diff,0,1);
-            HandlePosition.X = mousePos.X;
+            float diff = (Bounds.X + Position.X - mousePos.X) / Bounds.X;
+            float rawValue = Math.Clamp(1 - diff, 0, 1);
+
+            if (step > 0)
+            {
+                // Adjust value to snap to the nearest step
+                Value = (float)Math.Round(rawValue / step) * step;
+            }
+            else
+            {
+                // Smooth value
+                Value = rawValue;
+            }
+
+            HandlePosition.X = (1 - Value) * (Bounds.X + Position.X) + Value * (Bounds.X + Position.X + Bounds.X);
+
         }
     }
     

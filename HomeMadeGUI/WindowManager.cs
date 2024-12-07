@@ -27,9 +27,7 @@ public class Window1
     private NodePlacer NodePlacer;
     private RoundedBox graphControlsBox;
 
-    private PictureButton<int, int> pauseButton;
-    private PictureButton<int, int> stepBackButton;
-    private PictureButton<int, int> stepForwardButton;
+    private ScrollBar speedBar;
     public Window1()
     {
          //topBox = new Box(new Position(0, 0), new Bounds(1f, 0.12f), Pallet.SecondaryColor);
@@ -46,12 +44,7 @@ public class Window1
           Viewport = new Viewport(new Position(0.12f, 0.1f), new Position(0.47f, 0.5f),NodePlacer.HandlePlacer);
           NodePlacer.viewport = Viewport;
           graphControlsBox  = new RoundedBox(new Position(0.6f, 0.1f), new Bounds(0.045f, 0.5f), Pallet.SecondaryColor,roundness:15);
-          pauseButton = new PictureButton<int, int>(new Position(0.613f, 0.12f), OpenHomeWindow, 1,
-              "Resources/Icons/pause.png",scale:0.5f);
-          stepBackButton = new PictureButton<int, int>(new Position(0.6f, 0.175f), OpenHomeWindow, 1,
-              "Resources/Icons/leftArrow.png",scale:0.5f);
-          stepForwardButton = new PictureButton<int, int>(new Position(0.63f, 0.175f), OpenHomeWindow, 1,
-              "Resources/Icons/rightArrow.png",scale:0.5f);
+          
           codeViewPort = new Viewport(new Position(0.67f, 0.0f), new Position(0.6f, 1f), drawCode,noBackground:true,noZoom:true,noMoveBack:true,noMoveForward:true);
           
           //cornerOutline = new Box(new Position(0, 0), new Bounds(0.12f, 0.12f), Pallet.Invisible,outline:true);
@@ -60,7 +53,8 @@ public class Window1
           codeLineNums = new RoundedBox(new Position(0.65f, 0), new Bounds(0.02f, 1), Pallet.SecondaryColor);
           code = new CodeRep( "Resources/Code/DepthFirstSearch.py" ,new Position(0f,0.01f));
           codeBox = new RoundedBox(new Position(0.67f, 0), new Bounds(0.6f, 1), Pallet.SecondaryColor);
-          bar = new ScrollBar(new Position(0.67f, 0.97f), new Bounds(0.31f, 0.01f),defaultValue:0);
+          bar = new ScrollBar(new Position(0.67f, 0.97f), new Bounds(0.31f, 0.01f),defaultValue:0,step:0.0f);
+          speedBar = new ScrollBar(new Position(0.13f, 0.61f), new Bounds(0.1f, 0.01f),defaultValue:0.5f,step:0.1f);
 
     }
     private void viewportDraws(int xOffset = 0, int yOffset = 0)
@@ -98,9 +92,9 @@ public class Window1
         //float offset = Math.Clamp((Raylib.GetMousePosition().X - code.Position.X)*0.5f,0,200);
         //Console.WriteLine(offset);
         bar.HandelScrollBar();
-        pauseButton.HandleButton();
-        stepBackButton.HandleButton();
-        stepForwardButton.HandleButton();
+        speedBar.HandelScrollBar();
+        Console.WriteLine(speedBar.Value);
+        NodePlacer.value = speedBar.Value;
 
         
         code.xMoveOffset = (int)((bar.Value) * -200);

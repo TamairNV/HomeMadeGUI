@@ -7,7 +7,8 @@ public class NodePlacer
 {
     public List<GraphNode> GraphNodes = new List<GraphNode>();
     public Viewport viewport;
-    public  HashSet<GraphNode> Visited = new HashSet<GraphNode>();
+    public List<GraphNode> Visited = new List<GraphNode>();
+    public float value = 0.5f;
     public NodePlacer()
     {
         
@@ -52,6 +53,7 @@ public class NodePlacer
         {
          
             node.HandleNode();
+            node.HandleAlgor(value);
         }
 
     }
@@ -78,7 +80,7 @@ public class GraphNode
     public bool Searched;
     private GraphSearchStepper searcher = new GraphSearchStepper();
 
-    public GraphNode(Vector2 position,string name,NodePlacer nodePlacer, float radius = 20, bool isStartNode = false)
+    public GraphNode(Vector2 position,string name,NodePlacer nodePlacer, float radius = 10, bool isStartNode = false)
     {
         
         Position = position;
@@ -105,7 +107,7 @@ public class GraphNode
         
     }
 
-    private void Draw(int fontSize = 14)
+    private void Draw(int fontSize = 10)
     {
         Raylib.DrawCircle((int)Position.X,(int)Position.Y,Radius+1,Color.Black);
         Raylib.DrawCircle((int)Position.X,(int)Position.Y,Radius,CurrentColour);
@@ -139,19 +141,33 @@ public class GraphNode
 
     private bool startAlgor = false;
     private float timer = 0;
-    public void HandleNode()
-    {
-        if (Raylib.IsKeyPressed(KeyboardKey.Enter) && IsStartNode)
-        {
-            startAlgor = true;
-        }
 
+    public void HandleAlgor(float value)
+    {
         timer += Raylib.GetFrameTime();
-        if (startAlgor && timer > 0.5f)
+
+        if (value > 0.5f && timer > 2* (1-value))
         {
             searcher.Step();
             timer = 0;
+            
         }
+
+        if (value < 0.5f  && timer > 2* value)
+        {
+            searcher.ReverseStep();
+            timer = 0;
+            
+        }
+        
+        
+
+        
+        
+    }
+    public void HandleNode()
+    {
+ 
         if (Searched)
         {
             CurrentColour = searchedColour;
@@ -227,22 +243,7 @@ public class GraphNode
 
     }
 
-    public void DepthFirstSearch(GraphNode start)
-    {
 
-        // Mark the node as visited
-        if (!NodePlacer.Visited.Contains(start))
-        {
-            NodePlacer.Visited.Add(start);
-            start.Searched = true;
-            // Recur for each neighbor
-            foreach (var neighbor in start.Children)
-            {
-                DepthFirstSearch(neighbor);
-            }
-        }
-
-    }
 
 }
 
@@ -269,7 +270,7 @@ public class GraphSearchStepper
             queue.Enqueue(start);
         }
         this.nodePlacer = nodePlacer;
-        nodePlacer.Visited = new HashSet<GraphNode>();
+        nodePlacer.Visited = new List<GraphNode>();
     }
 
     public bool BreadthFirstSearchStep()
@@ -308,6 +309,31 @@ public class GraphSearchStepper
         }
 
         return BreadthFirstSearchStep();
+
+    }
+
+    public bool ReverseStep()
+    {
+
+        if (nodePlacer == null || nodePlacer.Visited.Count <= 0)
+        {
+            return false;}
+        GraphNode lastNode = nodePlacer.Visited[nodePlacer.Visited.Count - 1];
+        nodePlacer.Visited.RemoveAt(nodePlacer.Visited.Count - 1);
+        
+        if (isDepth)
+        {
+            stack.Push(lastNode);
+        }
+        else
+        {
+            List<GraphNode> tempList = queue.ToList();
+            tempList.Insert(0, lastNode);
+            queue = new Queue<GraphNode>(tempList);
+        }
+
+        lastNode.Searched = false;
+        return true;
 
     }
 
