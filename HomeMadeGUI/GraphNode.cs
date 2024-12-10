@@ -121,7 +121,7 @@ public class GraphNode
         {
             if (searcher.algorithm != "A*" || !searcher.algorDone)
             {
-                searcher.algorDone = searcher.Step();
+                searcher.Step();
             }
             timer = 0;
         }

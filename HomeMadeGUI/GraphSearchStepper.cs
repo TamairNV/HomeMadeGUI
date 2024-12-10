@@ -8,6 +8,7 @@ public class GraphSearchStepper
     private Stack<GraphNode> stack = new Stack<GraphNode>();
     private Queue<GraphNode> queue = new Queue<GraphNode>();
     private PriorityQueue<GraphNode,float> priorityQueue = new PriorityQueue<GraphNode,float>();
+
     private NodePlacer nodePlacer = null;
     public bool algorDone = false;
 
@@ -110,6 +111,10 @@ public class GraphSearchStepper
             }
             lastNode.Searched = false;
         }
+        else
+        {
+            AStarStepBack();
+        }
         
         
         
@@ -156,18 +161,61 @@ public class GraphSearchStepper
         }
         
     }
+
+    public bool AStarStepBack()
+    {
+        
+        endnode.state = 0;
+        if (nodePlacer.Visited.Count == 0)
+        {
+            return false;}
+        nodePlacer.Visited[^1].state = 0;
+        nodePlacer.Visited.RemoveAt(nodePlacer.Visited.Count-1);
+        foreach (var node in priorityQueue.UnorderedItems)
+        {
+            node.Element.state = 0;
+            
+        }
+        priorityQueue = new PriorityQueue<GraphNode, float>();
+        List<GraphNode> visited = new List<GraphNode>(nodePlacer.Visited);
+        foreach (var node in visited)
+        {
+            AStarCheckVisit(node);
+        }
+
+        return true;
+    }
     public bool AStarStep()
     {
+
+        if (endnode.state == 4)
+        {
+            return false;
+        }
+        if (priorityQueue.Count == 0)
+        {
+            priorityQueue.Enqueue(nodePlacer.startNode,0);
+            Console.WriteLine("more burgers");
+        }
         GraphNode currentNode = priorityQueue.Dequeue();
+        nodePlacer.Visited.Add(currentNode);
+        currentNode.state = 2;
         if (currentNode == endnode)
         {
-            
             AstarGetPath(currentNode);
             return true; 
         }
-        currentNode.state = 2;
-        
-        
+  
+       
+        AStarCheckVisit(currentNode);
+
+
+        return false;
+    }
+
+    private void AStarCheckVisit(GraphNode currentNode)
+    {
+
         foreach (var child in currentNode.Children)
         {
             if (child.Item1.state == 0)
@@ -176,6 +224,7 @@ public class GraphSearchStepper
                 child.Item1.GCost = currentNode.GCost + child.Item2;
                 child.Item1.HCost = Math.Abs(Vector2.Distance(child.Item1.Position, endnode.Position));
                 priorityQueue.Enqueue(child.Item1,child.Item1.GCost + child.Item1.HCost);
+                
                 child.Item1.state = 1;
             }
             else if (child.Item1.state == 1 && child.Item1.Parent.GCost >= currentNode.GCost)
@@ -184,7 +233,5 @@ public class GraphSearchStepper
                 child.Item1.GCost = currentNode.GCost + child.Item2;
             }
         }
-
-        return false;
     }
 }
