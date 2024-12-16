@@ -3,6 +3,11 @@ using Raylib_cs;
 
 namespace HomeMadeGUI;
 
+/// <summary>
+/// Represents a generic button with customizable behavior and appearance.
+/// </summary>
+/// <typeparam name="Tout">The output type of the button's action.</typeparam>
+/// <typeparam name="Tin">The input type of the button's action.</typeparam>
 public class Button<Tout,Tin>
 {
     public Position Position;
@@ -12,12 +17,12 @@ public class Button<Tout,Tin>
     protected int size;
     private Bounds bounds;
     
-    protected Color textColor = Pallet.PrimaryTextColor;
-    protected Color hoverColor = Pallet.ButtonHoverColor;
-    protected Color pressedColor = Pallet.ButtonActiveColor;
+    public Color textColor = Pallet.PrimaryTextColor;
+    public Color hoverColor = Pallet.ButtonHoverColor;
+    public Color pressedColor = Pallet.ButtonActiveColor;
     protected Color currentColor;
 
-    protected Color buttonColor = Pallet.ButtonPrimaryColor;
+    public Color buttonColor = Pallet.ButtonPrimaryColor;
     
     private RoundedBox roundedBox = null;
     protected Font font;
@@ -51,6 +56,9 @@ public class Button<Tout,Tin>
 
     }
 
+    /// <summary>
+    /// Handles the button's behavior based on mouse interactions.
+    /// </summary>
     public virtual void HandleButton(int xOffset = 0, int yOffset = 0)
     {
         Draw();
@@ -137,12 +145,18 @@ public class Button<Tout,Tin>
         Run();
     }
 
-    public static bool CheckTextPointCollision(Vector2 pos, string text,int size,Vector2 point)
+    protected static bool CheckTextPointCollision(Vector2 pos, string text,int size,Vector2 point)
     {
         int textWidth = Raylib.MeasureText(text, size);
         bool xCheck = point.X >= pos.X- textWidth / 2  && point.X <= pos.X- textWidth / 2 + textWidth;
         bool yCheck = point.Y >= pos.Y- size / 2 && point.Y <= pos.Y- size / 2 + size;
         return xCheck && yCheck;
+    }
+    protected static bool CheckPointCollision(Vector2 pos,int radius,Vector2 point)
+    {
+        float distance = Vector2.Distance(pos, point);
+        return distance <= radius;
+
     }
 
     public void Run()

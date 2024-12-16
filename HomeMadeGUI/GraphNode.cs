@@ -103,10 +103,10 @@ public class GraphNode
                 CircleInterceptionPoint + perp2,
                 color
             );
-            Raylib.DrawTextEx(Text.Fonts[3],Math.Round(distance/10,1).ToString(),-(direction * distance/2) + Position,10,0,Color.White);
-
-
-
+            if (NodePlacer.algorithm == "A*")
+            {
+                Raylib.DrawTextEx(Text.Fonts[3],Math.Round(distance/10,1).ToString(),-(direction * distance/2) + Position,10,0,Color.White);
+            }
         }
     }
 
@@ -130,12 +130,7 @@ public class GraphNode
         {
             searcher.ReverseStep();
             timer = 0;
-            
         }
-        
-        
-
-        
         
     }
     public void HandleNode()
@@ -144,6 +139,10 @@ public class GraphNode
         if (NodePlacer.startNode.searcher.endnode == this)
         {
             CurrentColour = Color.Red;
+        }
+        else if (IsStartNode)
+        {
+            CurrentColour = startColour;
         }
         else if (state == 4)
         {
@@ -167,10 +166,7 @@ public class GraphNode
         {
             CurrentColour = activeColour;
         }
-        else if (IsStartNode)
-        {
-            CurrentColour = startColour;
-        }
+
         else
         {
             CurrentColour = defaultColour;
@@ -220,14 +216,10 @@ public class GraphNode
                 if (Raylib.IsKeyDown(KeyboardKey.F))
                 {
                     NodePlacer.startNode.searcher.endnode = this;
-                    
                 }
                 Active = true;
             }
-            
         }
-        
-        
     }
 
     public bool MouseOverNode()

@@ -10,7 +10,7 @@ public class NodePlacer
     public List<GraphNode> Visited = new List<GraphNode>();
     public float value = 0.5f;
     public GraphNode startNode;
-    private string algorithm;
+    public string algorithm;
     public NodePlacer(string algorithm)
     {
         this.algorithm = algorithm;

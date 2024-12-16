@@ -1,6 +1,10 @@
 namespace HomeMadeGUI;
 using System.Numerics;
 using Raylib_cs;
+
+/// <summary>
+/// Represents a button with a picture that can be flipped horizontally.
+/// </summary>
 public class PictureButton<Tout,Tin> : Button<Tout,Tin>
 {
     public Texture2D ButtonTexture;
@@ -49,6 +53,9 @@ public class PictureButton<Tout,Tin> : Button<Tout,Tin>
         
 
     }
+    /// <summary>
+    /// Handles the drawing of the button, including flipping the texture if necessary.
+    /// </summary>
     public override void Draw()
     {
         if (flip)
@@ -67,9 +74,6 @@ public class PictureButton<Tout,Tin> : Button<Tout,Tin>
         {
             Raylib.DrawTextureEx(ButtonTexture, new Vector2(Position.X, Position.Y), 0.0f, scale, currentColor);
         }
-
-
-      
     }
     
     public override void MouseHover()

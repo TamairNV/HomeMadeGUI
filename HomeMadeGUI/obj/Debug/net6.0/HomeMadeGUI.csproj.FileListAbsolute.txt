@@ -19,4 +19,5 @@
 /Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/bin/Debug/net6.0/runtimes/osx-x64/native/libraylib.dylib
 /Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/bin/Debug/net6.0/runtimes/win-x64/native/raylib.dll
 /Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/bin/Debug/net6.0/runtimes/win-x86/native/raylib.dll
-/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.csproj.CopyComplete
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMadeGUI.sourcelink.json
+/Users/tamer/RiderProjects/HomeMadeGUI/HomeMadeGUI/obj/Debug/net6.0/HomeMade.ACA1FF9D.Up2Date

@@ -26,8 +26,10 @@ public class Window1
     private RoundedBox codeLineNums;
     private NodePlacer NodePlacer;
     private RoundedBox graphControlsBox;
-
     private ScrollBar speedBar;
+
+
+    private CircleButton<int, int> circleButton;
     public Window1()
     {
          //topBox = new Box(new Position(0, 0), new Bounds(1f, 0.12f), Pallet.SecondaryColor);
@@ -56,6 +58,9 @@ public class Window1
           bar = new ScrollBar(new Position(0.67f, 0.97f), new Bounds(0.31f, 0.01f),defaultValue:0,step:0.0f);
           speedBar = new ScrollBar(new Position(0.13f, 0.61f), new Bounds(0.1f, 0.01f),defaultValue:0.5f,step:0.1f);
 
+          circleButton = new CircleButton<int, int>(new Position(0.3f, 0.3f), 30, OpenHomeWindow, 1, "start" ,Text.Fonts[3],23);
+          circleButton.buttonColor = CodeRep.MagicMethods;
+          circleButton.hoverColor = Color.Magenta;
     }
     private void viewportDraws(int xOffset = 0, int yOffset = 0)
     {
@@ -75,30 +80,24 @@ public class Window1
     
     public void Draw()
     {
-        //topBox.Draw();
         sideBox.Draw();
-        //mainBox.Draw();
         Viewport.HandleViewport();
         titleBox.Draw();
-        //cornerOutline.Draw();
-        //sideOutline.Draw();
-        //homeButton.HandleButton();
         title.DrawText();
         codeLineNums.Draw();
         codeBox.Draw();
         graphControlsBox.Draw();
         
         codeViewPort.HandleViewport();
-        //float offset = Math.Clamp((Raylib.GetMousePosition().X - code.Position.X)*0.5f,0,200);
-        //Console.WriteLine(offset);
+
         bar.HandelScrollBar();
         speedBar.HandelScrollBar();
         NodePlacer.value = speedBar.Value;
-
         
         code.xMoveOffset = (int)((bar.Value) * -200);
         code.DrawLineNums(codeViewPort, fontSize:21);
         homeButton.HandleButton();
+        //circleButton.HandleButton();
         
 
     }
